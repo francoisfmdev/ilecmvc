@@ -1,4 +1,3 @@
-htaccess content 
 RewriteEngine On
 RewriteBase /lightmvc/
 RewriteCond %{REQUEST_FILENAME} !-f
