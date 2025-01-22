@@ -25,6 +25,7 @@ class Database {
     }
 
     private function __clone() {}
+    
     public function __wakeup() {
         throw new \Exception("Cannot deserialize a singleton.");
     }

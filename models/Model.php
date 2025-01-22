@@ -1,5 +1,4 @@
 <?php
-
 namespace Models;
 
 use PDO;
@@ -19,41 +18,44 @@ class Model
      * Récupérer une ligne par son ID.
      *
      * @param int $id
-     * @return array|null
+     * @param bool $fetchAsObject Indique si le retour doit être un objet (true) ou un tableau associatif (false).
+     * @return object|array|null
      */
-    public function find(int $id): ?array
+    public function findById(int $id, bool $fetchAsObject = true)
     {
         $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = :id");
         $stmt->execute([':id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        return $fetchAsObject ? $stmt->fetch(PDO::FETCH_OBJ) : $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     /**
      * Récupérer toutes les lignes.
      *
+     * @param bool $fetchAsObject Indique si les retours doivent être des objets (true) ou des tableaux associatifs (false).
      * @return array
      */
-    public function findAll(): array
+    public function findAll(bool $fetchAsObject = true): array
     {
         $stmt = $this->db->query("SELECT * FROM {$this->table}");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $fetchAsObject ? $stmt->fetchAll(PDO::FETCH_OBJ) : $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
      * Insérer une nouvelle ligne.
      *
-     * @param array $data
+     * @param string[] $columns Les colonnes à insérer.
+     * @param mixed ...$values Les valeurs à insérer (dans le même ordre que les colonnes).
      * @return int|null L'ID de la nouvelle ligne ou null en cas d'échec.
      */
-    public function create(array $data): ?int
+    public function create(array $columns, ...$values): ?int
     {
-        $columns = implode(', ', array_keys($data));
-        $placeholders = ':' . implode(', :', array_keys($data));
+        $columnsStr = implode(', ', $columns);
+        $placeholders = implode(', ', array_fill(0, count($values), '?'));
 
-        $sql = "INSERT INTO {$this->table} ($columns) VALUES ($placeholders)";
+        $sql = "INSERT INTO {$this->table} ($columnsStr) VALUES ($placeholders)";
         $stmt = $this->db->prepare($sql);
 
-        if ($stmt->execute($data)) {
+        if ($stmt->execute($values)) {
             return (int)$this->db->lastInsertId();
         }
 
@@ -64,18 +66,17 @@ class Model
      * Mettre à jour une ligne par son ID.
      *
      * @param int $id
-     * @param array $data
+     * @param string[] $columns Les colonnes à mettre à jour.
+     * @param mixed ...$values Les valeurs à mettre à jour (dans le même ordre que les colonnes).
      * @return bool
      */
-    public function update(int $id, array $data): bool
+    public function update(int $id, array $columns, ...$values): bool
     {
-        $setPart = implode(', ', array_map(fn($key) => "$key = :$key", array_keys($data)));
-        $data['id'] = $id;
-
-        $sql = "UPDATE {$this->table} SET $setPart WHERE id = :id";
+        $setPart = implode(', ', array_map(fn($col) => "$col = ?", $columns));
+        $sql = "UPDATE {$this->table} SET $setPart WHERE id = ?";
         $stmt = $this->db->prepare($sql);
 
-        return $stmt->execute($data);
+        return $stmt->execute([...$values, $id]);
     }
 
     /**

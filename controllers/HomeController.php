@@ -17,6 +17,7 @@ class HomeController extends Controller
             "title" => "Page d'accueil",
             "h1" => "Bienvenue",
             "content" => "Ceci est la page d'accueil.",
+            "fruits"=>["pommes","fraise"]
         ];
 
         $this->render("home.html.twig", $data);

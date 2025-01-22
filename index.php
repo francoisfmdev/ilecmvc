@@ -10,14 +10,13 @@
     $router = new AltoRouter();
 
     // Définir le chemin de base
-    $router->setBasePath('/lightmvc');
+    $router->setBasePath('/ilecmvc');
 
 
 
 
     // Définir les routes
     $router->map('GET', '/', function () {
-        
         $db = Database::getInstance();
         $homeController = new HomeController($db);
         $homeController->index();
@@ -27,6 +26,12 @@
         $db = Database::getInstance();
         $userController = new UserController($db);
         $userController->inscription();
+    });
+    $router->map('POST', '/inscription', function () {
+        
+        $db = Database::getInstance();
+        $userController = new UserController($db);
+        $userController->inscription(); 
     });
     $router->map('GET', '/connection', function () {
         

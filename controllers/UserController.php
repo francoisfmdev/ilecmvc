@@ -1,43 +1,43 @@
 <?php
 namespace Controllers;
+use Models\UserModel;
 
-class UserController extends Controller{
-
-    public function index(){
+class UserController extends Controller
+{
+    /**
+     * Afficher la page de connexion.
+     */
+    public function index()
+    {
         $data = [
             "title" => "Connection",
             "h1" => "Connection",
-         
         ];
 
         $this->render("connection.html.twig", $data);
-    } 
+    }
 
-    // Afficher le formulaire d'inscription
+    /**
+     * Afficher le formulaire d'inscription et traiter l'inscription.
+     */
     public function inscription()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Traiter les données du formulaire
             $username = $_POST['username'] ?? '';
-            $email = $_POST['email'] ?? '';
-            $password = $_POST['password'] ?? '';
+            $email = $_POST['mail'] ?? '';
+            $password = $_POST['pass'] ?? '';
 
             if (!empty($username) && !empty($email) && !empty($password)) {
                 try {
-                    // Hasher le mot de passe
-                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                    $userModel = new UserModel($this->db);
+                    $userId = $userModel->register($username, $email, $password);
 
-                    // Insérer l'utilisateur dans la base de données
-                    $stmt = $this->db->prepare('INSERT INTO users (username, email, password) VALUES (:username, :email, :password)');
-                    $stmt->execute([
-                        ':username' => $username,
-                        ':email' => $email,
-                        ':password' => $hashedPassword,
-                    ]);
-
-                    // Rediriger vers la page de connexion ou afficher un message de succès
-                    header('Location: /lightmvc/connection');
-                    exit;
+                    if ($userId) {
+                        header('Location: /ilecmvc/connection');
+                        exit;
+                    } else {
+                        $error = 'Impossible de créer l\'utilisateur.';
+                    }
                 } catch (\PDOException $e) {
                     $error = 'Erreur lors de l\'inscription : ' . $e->getMessage();
                 }
@@ -46,10 +46,8 @@ class UserController extends Controller{
             }
         }
 
-        // Afficher le formulaire avec un message d'erreur éventuel
         $this->render('inscription.html.twig', [
             'error' => $error ?? null,
         ]);
     }
-
 }

@@ -35,19 +35,19 @@ class Controller
 
     
     public function setSession(string $key, $value): void
-{
-    $_SESSION[$key] = $value;
-}
+    {
+        $_SESSION[$key] = $value;
+    }
 
-public function getSession(string $key, $default = null)
-{
-    return $_SESSION[$key] ?? $default;
-}
+    public function getSession(string $key, $default = null)
+    {
+        return $_SESSION[$key] ?? $default;
+    }
 
-public function deleteSession(string $key): void
-{
-    unset($_SESSION[$key]);
-}
+    public function deleteSession(string $key): void
+    {
+        unset($_SESSION[$key]);
+    }
 
 
 }
