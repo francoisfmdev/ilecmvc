@@ -50,4 +50,24 @@ class UserController extends Controller
             'error' => $error ?? null,
         ]);
     }
+
+
+    public function connection(){
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') 
+        {
+            $email = $_POST['mail'] ?? '';
+            $password = $_POST['pass'] ?? '';
+
+            if(!empty($email) && !empty($password)){
+                 try{
+
+                 }catch(\PDOException $e){
+                        $userModel = new UserModel($this->db);
+                 }
+            }
+        }
+        
+
+    }
 }

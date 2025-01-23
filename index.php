@@ -39,7 +39,12 @@
         $userController = new UserController($db);
         $userController->index();
     });
-
+    $router->map('POST', '/connection', function () {
+        
+        $db = Database::getInstance();
+        $userController = new UserController($db);
+        $userController->connection();
+    });
     // Matcher et gérer la requête
     $match = $router->match();
 
