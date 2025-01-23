@@ -33,7 +33,9 @@ class UserController extends Controller
                     $userId = $userModel->register($username, $email, $password);
 
                     if ($userId) {
-                        header('Location: /ilecmvc/connection');
+                        $_SESSION["mail"] = $user->mail;
+                        $_SESSION["username"] = $user->username;
+                        header('Location: /ilecmvc/admin');
                         exit;
                     } else {
                         $error = 'Impossible de créer l\'utilisateur.';
@@ -54,13 +56,25 @@ class UserController extends Controller
 
     public function connection(){
 
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') 
         {
+           
             $email = $_POST['mail'] ?? '';
             $password = $_POST['pass'] ?? '';
-
+           $userModel =  new UserModel($this->db);
+           
             if(!empty($email) && !empty($password)){
                  try{
+                    $connected = $userModel->connection($email,$password);
+                    if($connected == 1){
+                        $_SESSION["mail"] = $user->mail;
+                        $_SESSION["username"] = $user->username;
+                    }
+                    else{
+                        
+                        header('Location: /ilecmvc/connection');
+                    }
 
                  }catch(\PDOException $e){
                         $userModel = new UserModel($this->db);
@@ -69,5 +83,16 @@ class UserController extends Controller
         }
         
 
+    }
+    public function admin(){
+
+        $data = [
+            "mail" => $_SESSION["mail"],
+            "username"=> $_SESSION["username"],
+            "h1" => "Admin",
+        ];
+
+
+        $this->render("admin.html.twig",$data);
     }
 }

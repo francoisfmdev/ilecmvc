@@ -35,12 +35,14 @@ class UserModel extends Model
     }
 
     public function connection(string $email, string $password): ?int
-    {
+    {   
+        
        $user = $this->get_user_by_mail($email,true);
+       ;
        if(password_verify($password, $user->pass) ){
-        
+        return 1;
        }else{
-        
+        return 0;
        }
     }
 }
