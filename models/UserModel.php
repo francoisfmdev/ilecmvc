@@ -26,6 +26,13 @@ class UserModel extends Model
     }
 
 
+    public function get_user_by_id(string $id,bool $fetchAsObject = true){
+
+        $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+        return $fetchAsObject ? $stmt->fetch(PDO::FETCH_OBJ) : $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function register(string $username, string $email, string $password): ?int
     {
         // Hashage du mot de passe avant l'insertion

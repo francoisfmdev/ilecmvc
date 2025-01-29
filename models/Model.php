@@ -90,4 +90,10 @@ class Model
         $stmt = $this->db->prepare("DELETE FROM {$this->table} WHERE id = :id");
         return $stmt->execute([':id' => $id]);
     }
+
+
+    public function get_last_id(): int
+    {
+        return (int)$this->db->lastInsertId();
+    }
 }

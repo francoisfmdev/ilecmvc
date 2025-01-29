@@ -30,9 +30,11 @@ class UserController extends Controller
             if (!empty($username) && !empty($email) && !empty($password)) {
                 try {
                     $userModel = new UserModel($this->db);
-                    $userId = $userModel->register($username, $email, $password);
+                    $issuccess = $userModel->register($username, $email, $password);
 
-                    if ($userId) {
+                    if ($issuccess) {
+                        $id = $userModel->get_last_id();
+                        $user = $userModel->get_user_by_id($id);
                         $_SESSION["mail"] = $user->mail;
                         $_SESSION["username"] = $user->username;
                         header('Location: /ilecmvc/admin');
@@ -62,14 +64,21 @@ class UserController extends Controller
            
             $email = $_POST['mail'] ?? '';
             $password = $_POST['pass'] ?? '';
+            
+           
            $userModel =  new UserModel($this->db);
            
             if(!empty($email) && !empty($password)){
                  try{
+
                     $connected = $userModel->connection($email,$password);
+                   
                     if($connected == 1){
+                        
+                        $user = $userModel->get_user_by_mail($email);
                         $_SESSION["mail"] = $user->mail;
                         $_SESSION["username"] = $user->username;
+                        header('Location: /ilecmvc/admin');
                     }
                     else{
                         
