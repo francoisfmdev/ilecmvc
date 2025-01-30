@@ -37,6 +37,8 @@ class UserController extends Controller
                         $user = $userModel->get_user_by_id($id);
                         $_SESSION["mail"] = $user->mail;
                         $_SESSION["username"] = $user->username;
+                        $_SESSION["role"] = $user->role;
+                        $_SESSION["user_id"] = $user->id;
                         header('Location: /litemvc/admin');
                         exit;
                     } else {
@@ -78,6 +80,8 @@ class UserController extends Controller
                         $user = $userModel->get_user_by_mail($email);
                         $_SESSION["mail"] = $user->mail;
                         $_SESSION["username"] = $user->username;
+                        $_SESSION["role"] = $user->role;
+                        $_SESSION["user_id"] = $user->id;
                         header('Location: /litemvc/admin');
                     }
                     else{
@@ -98,6 +102,7 @@ class UserController extends Controller
         $data = [
             "mail" => $_SESSION["mail"],
             "username"=> $_SESSION["username"],
+            "role" => $_SESSION["role"],
             "h1" => "Admin",
         ];
 
