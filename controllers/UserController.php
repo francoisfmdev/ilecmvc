@@ -37,7 +37,7 @@ class UserController extends Controller
                         $user = $userModel->get_user_by_id($id);
                         $_SESSION["mail"] = $user->mail;
                         $_SESSION["username"] = $user->username;
-                        header('Location: /ilecmvc/admin');
+                        header('Location: /litemvc/admin');
                         exit;
                     } else {
                         $error = 'Impossible de créer l\'utilisateur.';
@@ -78,11 +78,11 @@ class UserController extends Controller
                         $user = $userModel->get_user_by_mail($email);
                         $_SESSION["mail"] = $user->mail;
                         $_SESSION["username"] = $user->username;
-                        header('Location: /ilecmvc/admin');
+                        header('Location: /litemvc/admin');
                     }
                     else{
                         
-                        header('Location: /ilecmvc/connection');
+                        header('Location: /litemvc/connection');
                     }
 
                  }catch(\PDOException $e){

@@ -5,12 +5,13 @@
     use Controllers\HomeController;
     use Controllers\UserController;
     use Database\Database;
+    use Middlewares\AuthMiddleware;
 
     // Créer une instance du routeur
     $router = new AltoRouter();
 
     // Définir le chemin de base
-    $router->setBasePath('/ilecmvc');
+    $router->setBasePath('/litemvc');
 
 
 
@@ -21,6 +22,8 @@
         $homeController = new HomeController($db);
         $homeController->index();
     });
+
+   
     // inscription
     $router->map('GET', '/inscription', function () {
         
@@ -51,7 +54,8 @@
 
     // route Admin
     $router->map('GET', '/admin', function () {
-        
+      
+        AuthMiddleware::auth();
         $db = Database::getInstance();
         $userController = new UserController($db);
         $userController->admin();
