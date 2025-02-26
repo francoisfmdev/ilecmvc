@@ -70,7 +70,7 @@ class Model
      * @param mixed ...$values Les valeurs à mettre à jour (dans le même ordre que les colonnes).
      * @return bool
      */
-    public function update(int $id, array $columns, ...$values): bool
+    public function update(int $id, array $columns, Array $values): bool
     {
         $setPart = implode(', ', array_map(fn($col) => "$col = ?", $columns));
         $sql = "UPDATE {$this->table} SET $setPart WHERE id = ?";

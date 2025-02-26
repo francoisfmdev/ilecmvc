@@ -16,9 +16,17 @@
         <div class="row">
             <div class="col-6">
                 <ul>
-                {% for task in tasks %}
-                <li>{{task.content}}</li>
-                {% endfor %}
+                    {% for task in tasks %}
+                        <li ><p style="{{ task.status == 0 ? 'color:red' : 'color:green' }}">{{ task.content }}</p>
+                           <span>
+                              <form method="POST" action="/ilecmvc/change_status">
+                                 <input type="hidden" name="task_id" value="{{ task.id }}">
+                                 <input type="hidden" name="status" value="{{ task.status }}">
+                                 <button class="btn btn-sm btn-warning" type="submit">change status</button>
+                              </form>
+                           </span> 
+                        </li>
+                    {% endfor %}
                 </ul>
             </div>
             <div class="col-6">

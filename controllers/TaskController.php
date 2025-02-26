@@ -2,6 +2,7 @@
 
 namespace Controllers;
 use Models\TaskModel;
+use Middleware\AuthMiddleware;
 use PDO;
 
 class TaskController extends Controller
@@ -35,8 +36,26 @@ class TaskController extends Controller
         }    
 
     }
-    public function deletetask(){
+    public function change_status(){
+        
+        AuthMiddleware::check_auth();
+       
+        if($_SERVER["REQUEST_METHOD"] =="POST"){ 
+                $status = (int) $_POST["status"];
+                $id = $_POST["task_id"];
+                if($status == 0){
+                    $status = 1;
+                }else{
+                    $status = 0;
+                }
+                $taskModel = new TaskModel($this->db); // Assure-toi que le modèle reçoit la connexion DB
+                $success = $taskModel->update($id, ['status'], [$status]); // Mise à jour de la colonne "status" à 1 pour l'id 1
+                header('Location: /ilecmvc/admin');
+            
+        }else{
+            header('Location: /admin');
+        }
     }
-    public function changestatus(){
+    public function delete_task(){
     }
 }

@@ -78,8 +78,9 @@
     $router->map('POST', '/change_status', function () {
         
         $db = Database::getInstance();
+      
         $taskController = new TaskController($db);
-        $taskController->changestatus();
+        $taskController->change_status();
     });
     $router->map('POST', '/delete_task', function () {
         
