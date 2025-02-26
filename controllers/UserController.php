@@ -2,6 +2,7 @@
 namespace Controllers;
 use Models\UserModel;
 use Models\TaskModel;
+use Middleware\AuthMiddleware;
 class UserController extends Controller
 {
     /**
@@ -102,10 +103,11 @@ class UserController extends Controller
        
     }
     public function admin(){
-
+        /*
         if(!isset($_SESSION["username"]) or empty($_SESSION["username"]) ){
             header('Location: /ilecmvc/connection');
-        }
+        }*/
+        AuthMiddleware::check_auth();
         $taskModel = new TaskModel($this->db);
         $tasks = $taskModel->findByUserId($_SESSION["user_id"]);
         $data = [
