@@ -4,6 +4,7 @@
 
     use Controllers\HomeController;
     use Controllers\UserController;
+    use Controllers\TaskController;
     use Database\Database;
 
     // Créer une instance du routeur
@@ -21,6 +22,10 @@
         $homeController = new HomeController($db);
         $homeController->index();
     });
+
+   
+ 
+   
     // inscription
     $router->map('GET', '/inscription', function () {
         
@@ -46,17 +51,42 @@
         
         $db = Database::getInstance();
         $userController = new UserController($db);
-        $userController->connection();
+        $userController->connection();   
+    });
+    $router->map('GET', '/deconnection', function () {
+        
+        $db = Database::getInstance();
+        $userController = new UserController($db);
+        $userController->deconnection();
     });
 
     // route Admin
+    
     $router->map('GET', '/admin', function () {
         
         $db = Database::getInstance();
         $userController = new UserController($db);
         $userController->admin();
     });
-    
+
+    $router->map('POST', '/add_task', function () {
+        
+        $db = Database::getInstance();
+        $taskController = new TaskController($db);
+        $taskController->addtask();
+    });
+    $router->map('POST', '/change_status', function () {
+        
+        $db = Database::getInstance();
+        $taskController = new TaskController($db);
+        $taskController->changestatus();
+    });
+    $router->map('POST', '/delete_task', function () {
+        
+        $db = Database::getInstance();
+        $taskController = new TaskController($db);
+        $taskController->deletetask();
+    });
 
     // Matcher et gérer la requête
     $match = $router->match();

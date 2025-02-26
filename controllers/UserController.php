@@ -1,7 +1,7 @@
 <?php
 namespace Controllers;
 use Models\UserModel;
-
+use Models\TaskModel;
 class UserController extends Controller
 {
     /**
@@ -37,6 +37,7 @@ class UserController extends Controller
                         $user = $userModel->get_user_by_id($id);
                         $_SESSION["mail"] = $user->mail;
                         $_SESSION["username"] = $user->username;
+                        $_SESSION["user_id"] = $user->id;
                         header('Location: /ilecmvc/admin');
                         exit;
                     } else {
@@ -78,6 +79,7 @@ class UserController extends Controller
                         $user = $userModel->get_user_by_mail($email);
                         $_SESSION["mail"] = $user->mail;
                         $_SESSION["username"] = $user->username;
+                        $_SESSION["user_id"] = $user->id;
                         header('Location: /ilecmvc/admin');
                     }
                     else{
@@ -93,15 +95,29 @@ class UserController extends Controller
         
 
     }
+
+    public function deconnection(){
+        session_destroy();
+        header('Location: /ilecmvc/');
+       
+    }
     public function admin(){
 
+        if(!isset($_SESSION["username"]) or empty($_SESSION["username"]) ){
+            header('Location: /ilecmvc/connection');
+        }
+        $taskModel = new TaskModel($this->db);
+        $tasks = $taskModel->findByUserId($_SESSION["user_id"]);
         $data = [
             "mail" => $_SESSION["mail"],
             "username"=> $_SESSION["username"],
             "h1" => "Admin",
+            "tasks" => $tasks,
         ];
-
-
+          
+       
         $this->render("admin.html.twig",$data);
     }
+
+
 }
