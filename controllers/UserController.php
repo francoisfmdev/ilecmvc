@@ -123,11 +123,20 @@ class UserController extends Controller
                   "tickets"=>$tickets
               ];
               
-              var_dump($_SESSION["role"] == 1);
-              die("test");
+              
               $this->render("admin.html.twig",$data);
         }else{
-
+            $tickets =   $ticketModel->findAll($_SESSION["user_id"]);
+            $data = [
+                "mail" => $_SESSION["mail"],
+                "username"=> $_SESSION["username"],
+                "role" => $_SESSION["role"],
+                "h1" => "Admin",
+                "tickets"=>$tickets
+            ];
+            
+            
+            $this->render("admin.html.twig",$data);
         }
         
     }
