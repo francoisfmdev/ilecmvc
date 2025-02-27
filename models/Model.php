@@ -72,11 +72,13 @@ class Model
      */
     public function update(int $id, array $columns, ...$values): bool
     {
-        $setPart = implode(', ', array_map(fn($col) => "$col = ?", $columns));
-        $sql = "UPDATE {$this->table} SET $setPart WHERE id = ?";
-        $stmt = $this->db->prepare($sql);
-
-        return $stmt->execute([...$values, $id]);
+        {
+            $setPart = implode(', ', array_map(fn($col) => "$col = ?", $columns));
+            $sql = "UPDATE {$this->table} SET $setPart WHERE id = ?";
+            $stmt = $this->db->prepare($sql);
+    
+            return $stmt->execute([...$values, $id]);
+        }
     }
 
     /**
