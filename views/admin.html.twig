@@ -17,10 +17,11 @@
             {% if role == 0 %}
                 {% include 'adminUser.html.twig' %}
             {% endif %}
-            {% if online == 1 %}
+            {% if role == 1 %}
                 {% include 'adminTech.html.twig' %}
-            {% if online == 1 %}    
-                {% include 'adminSuper.html.twig' %}
+            {% endif %}    
+            {% if role == 2 %}    
+                
             {% endif %}
         </div>
         </div>

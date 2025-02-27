@@ -123,7 +123,8 @@ class UserController extends Controller
                   "tickets"=>$tickets
               ];
               
-      
+              var_dump($_SESSION["role"] == 1);
+              die("test");
               $this->render("admin.html.twig",$data);
         }else{
 
