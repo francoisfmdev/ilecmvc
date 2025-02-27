@@ -54,7 +54,7 @@ class Model
 
         $sql = "INSERT INTO {$this->table} ($columnsStr) VALUES ($placeholders)";
         $stmt = $this->db->prepare($sql);
-
+        // INSERT INTO (username,mail)
         if ($stmt->execute($values)) {
             return (int)$this->db->lastInsertId();
         }

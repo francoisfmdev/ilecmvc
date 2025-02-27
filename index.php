@@ -4,6 +4,7 @@
 
     use Controllers\HomeController;
     use Controllers\UserController;
+    use Controllers\TicketController;
     use Database\Database;
     use Middlewares\AuthMiddleware;
 
@@ -24,6 +25,7 @@
     });
 
    
+
     // inscription
     $router->map('GET', '/inscription', function () {
         
@@ -60,7 +62,13 @@
         $userController = new UserController($db);
         $userController->admin();
     });
-    
+    $router->map('POST', '/create_ticket', function () {
+      
+        AuthMiddleware::auth();
+        $db = Database::getInstance();
+        $ticketController = new TicketController($db);
+        $ticketController->create_ticket();
+    });
 
     // Matcher et gérer la requête
     $match = $router->match();
