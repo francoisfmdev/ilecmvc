@@ -74,7 +74,12 @@
         $ticketController = new TicketController($db);
         $ticketController->create_ticket();
     });
-
+    $router->map("POST", "/assign_ticket", function (){
+        AuthMiddleware::auth();
+        $db = Database::getInstance();
+        $ticketController = new TicketController($db);
+        $ticketController->assign_ticket();
+    });
     // Matcher et gérer la requête
     $match = $router->match();
 

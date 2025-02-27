@@ -20,9 +20,10 @@
                     {% endif %}
                 </p>
             </div>
-            <form method="POST" action="litemvc/assign_ticket">
+            <form method="POST" action="/litemvc/assign_ticket">
                 <label for="tech">attribuer le ticket à </label>
-                <select class="form-control" name="tech">
+                <input type="hidden" name="ticket_id" value="{{ ticket.id }}"> 
+                <select class="form-control" name="user_id">
                     {% for admin in admins %}
                         <option value="{{ admin.id }}">{{ admin.username }}</option>
                     {% endfor %}

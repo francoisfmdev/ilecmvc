@@ -39,4 +39,20 @@ class TicketController extends Controller{
             }
         }
     }
+    public function assign_ticket(){
+        
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+           
+            if(!empty($_POST["ticket_id"]) &&!empty($_POST["user_id"])){
+               
+                $ticket_id = $_POST['ticket_id']?? '';
+                $user_id = $_POST['user_id']?? '';
+                $listingModel = new ListingModel($this->db);
+                
+                $success = $listingModel->assign_ticket_to_admin($user_id, $ticket_id);
+                header("Location: /litemvc/admin");
+            }
+
+        }
+    }
 }
