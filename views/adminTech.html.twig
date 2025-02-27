@@ -15,10 +15,12 @@
                 <p class="card-text">
                     {% if ticket.admin_id is null %}
                         <span class="text-warning">Pas encore attribué à un admin.</span>
-                    {% else %}
-                        <span class="text-success">Assigné à l'admin ID {{ ticket['admin_id'] }}.</span>
+                    {% endif %}
+                    {% if ticket.admin_id == user_id %}
+                        <span class="text-success">Votre ticket</span>
                     {% endif %}
                 </p>
+                
             </div>
         </div>
     {% endfor %}

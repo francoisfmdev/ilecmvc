@@ -2,6 +2,7 @@
 namespace Controllers;
 use Models\UserModel;
 use Models\ListingModel;
+
 class UserController extends Controller
 {
     /**
@@ -35,6 +36,7 @@ class UserController extends Controller
                     if ($issuccess) {
                         $id = $userModel->get_last_id();
                         $user = $userModel->get_user_by_id($id);
+                        $_SESSION['id'] =$user->id;
                         $_SESSION["mail"] = $user->mail;
                         $_SESSION["username"] = $user->username;
                         $_SESSION["role"] = $user->role;
@@ -78,6 +80,7 @@ class UserController extends Controller
                     if($connected == 1){
                         
                         $user = $userModel->get_user_by_mail($email);
+                        $_SESSION['id'] =$user->id;
                         $_SESSION["mail"] = $user->mail;
                         $_SESSION["username"] = $user->username;
                         $_SESSION["role"] = $user->role;
@@ -97,8 +100,16 @@ class UserController extends Controller
         
 
     }
+
+    public function deconnection(){
+        session_unset();
+        session_destroy();
+        header('Location: /litemvc/');
+    }
     public function admin(){
         $ticketModel = new ListingModel($this->db,"tickets");
+        $userModel = new UserModel($this->db);
+        $admins = $userModel->get_user_admin();
         if($_SESSION['role'] == 0){
             
             $tickets =   $ticketModel->get_ticket_where_user_id($_SESSION["user_id"]);
@@ -107,7 +118,9 @@ class UserController extends Controller
                   "username"=> $_SESSION["username"],
                   "role" => $_SESSION["role"],
                   "h1" => "Admin",
-                  "tickets"=>$tickets
+                  "tickets"=>$tickets,
+                
+                 
               ];
               
       
@@ -120,9 +133,10 @@ class UserController extends Controller
                   "username"=> $_SESSION["username"],
                   "role" => $_SESSION["role"],
                   "h1" => "Admin",
-                  "tickets"=>$tickets
+                  "tickets"=>$tickets,
+                  'user_id'=> $_SESSION["id"],
+                  
               ];
-              
               
               $this->render("admin.html.twig",$data);
         }else{
@@ -132,9 +146,10 @@ class UserController extends Controller
                 "username"=> $_SESSION["username"],
                 "role" => $_SESSION["role"],
                 "h1" => "Admin",
-                "tickets"=>$tickets
+                "tickets"=>$tickets,
+                "admins"=>$admins
             ];
-            
+                
             $this->render("admin.html.twig",$data);
         }
         

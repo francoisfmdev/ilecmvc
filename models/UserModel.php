@@ -33,6 +33,10 @@ class UserModel extends Model
         return $fetchAsObject ? $stmt->fetch(PDO::FETCH_OBJ) : $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function get_user_admin(){
+        $stmt = $this->db->query("SELECT * FROM {$this->table} WHERE role = 1");
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
     public function register(string $username, string $email, string $password): ?int
     {
         // Hashage du mot de passe avant l'insertion

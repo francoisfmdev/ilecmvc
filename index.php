@@ -47,6 +47,11 @@
         $userController = new UserController($db);
         $userController->index();
     });
+    $router->map('GET', '/deconnection', function () {
+        $db = Database::getInstance();
+        $userController = new UserController($db);
+        $userController ->deconnection();
+    });
     $router->map('POST', '/connection', function () {
         
         $db = Database::getInstance();
