@@ -18,7 +18,9 @@
                 {% include 'adminUser.html.twig' %}
             {% endif %}
             {% if online == 1 %}
-                {% include 'adminAdmin.html.twig' %}
+                {% include 'adminTech.html.twig' %}
+            {% if online == 1 %}    
+                {% include 'adminSuper.html.twig' %}
             {% endif %}
         </div>
         </div>
