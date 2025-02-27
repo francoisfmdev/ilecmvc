@@ -99,17 +99,20 @@ class UserController extends Controller
     }
     public function admin(){
 
-        $ticketModel = new ListingModel($this->db,"tickets");
-      $tickets =   $ticketModel->get_ticket_where_user_id($_SESSION["user_id"]);
-        $data = [
-            "mail" => $_SESSION["mail"],
-            "username"=> $_SESSION["username"],
-            "role" => $_SESSION["role"],
-            "h1" => "Admin",
-            "tickets"=>$tickets
-        ];
+        if($_SESSION['role'] == 0){
+            $ticketModel = new ListingModel($this->db,"tickets");
+            $tickets =   $ticketModel->get_ticket_where_user_id($_SESSION["user_id"]);
+              $data = [
+                  "mail" => $_SESSION["mail"],
+                  "username"=> $_SESSION["username"],
+                  "role" => $_SESSION["role"],
+                  "h1" => "Admin",
+                  "tickets"=>$tickets
+              ];
+              
+      
+              $this->render("admin.html.twig",$data);
+        }
         
-
-        $this->render("admin.html.twig",$data);
     }
 }
