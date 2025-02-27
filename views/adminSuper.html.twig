@@ -16,7 +16,7 @@
                     {% if ticket.admin_id is null %}
                         <span class="text-warning">Pas encore attribué à un admin.</span>
                     {% else %}
-                        <span class="text-success">Assigné à l'admin ID {{ ticket.admin_id }}.</span>
+                        <span class="text-success">Assigné à l'admin ID {{ ticket.admin_name }}.</span>
                     {% endif %}
                 </p>
             </div>

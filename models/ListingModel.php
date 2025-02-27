@@ -22,10 +22,20 @@ class ListingModel extends Model{
         $stmt->execute([':user_id' => $user_id]);
           return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function get_ticket_where_admin_id($user_id){
+    public function get_ticket_where_admin_id($admin_id){
         $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE admin_id = :admin_id");
-        $stmt->execute([':admin_id' => $user_id]);
+        $stmt->execute([':admin_id' => $admin_id]);
           return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function get_tickets_with_admin(){
+        $stmt = $this->db->prepare("
+        SELECT t.*, u.username AS admin_name
+        FROM tickets t
+        LEFT JOIN users u ON t.admin_id = u.id
+    ");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_CLASS);
+    }
+    
     
 }

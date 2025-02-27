@@ -114,7 +114,7 @@ class UserController extends Controller
               $this->render("admin.html.twig",$data);
         }
         elseif ($_SESSION["role"] == 1) {
-            $tickets =   $ticketModel->get_ticket_where_admin_id($_SESSION["user_id"]);
+            $tickets =   $ticketModel->get_tickets_with_admin();
               $data = [
                   "mail" => $_SESSION["mail"],
                   "username"=> $_SESSION["username"],
@@ -126,7 +126,7 @@ class UserController extends Controller
               
               $this->render("admin.html.twig",$data);
         }else{
-            $tickets =   $ticketModel->findAll($_SESSION["user_id"]);
+            $tickets =   $ticketModel->get_tickets_with_admin($_SESSION["user_id"]);
             $data = [
                 "mail" => $_SESSION["mail"],
                 "username"=> $_SESSION["username"],
@@ -134,7 +134,6 @@ class UserController extends Controller
                 "h1" => "Admin",
                 "tickets"=>$tickets
             ];
-            
             
             $this->render("admin.html.twig",$data);
         }
