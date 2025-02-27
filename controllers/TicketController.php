@@ -27,7 +27,13 @@ class TicketController extends Controller{
 
                     $ticketModel = new ListingModel($this->db);
                       $tickets = $ticketModel->get_ticket_where_user_id($user_id);
-                     
+                      $data = [
+                        "mail" => $_SESSION["mail"],
+                        "username"=> $_SESSION["username"],
+                        "role" => $_SESSION["role"],
+                        "h1" => "Admin",
+                        "tickets"=>$tickets
+                    ];  
                     $this->render("admin.html.twig", ['tickets' => $tickets]);
                 }
             }
